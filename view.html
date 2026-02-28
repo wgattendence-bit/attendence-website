@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>My Attendance</title>
+  <style>
+    body { font-family: Arial; text-align: center; }
+    table { margin: auto; border-collapse: collapse; }
+    td, th { border: 1px solid #000; padding: 10px; }
+    .P { background: #9cff9c; }
+    .A { background: #ff9c9c; }
+  </style>
+</head>
+<body>
+
+<h2>My Attendance</h2>
+<p id="person"></p>
+
+<table id="calendar"></table>
+
+<script>
+const API = "https://script.google.com/macros/s/AKfycbw5Z7WML1sgnU7zU_Rj0CzPNJ2VuELtFec6qmE9Q9MEEafEey9t1-zi62JpKTo3TRMXWw/exec";
+
+const params = new URLSearchParams(window.location.search);
+const name = params.get("name");
+
+document.getElementById("person").innerText = "Name: " + name;
+
+const today = new Date();
+const month = today.toISOString().slice(0,7);
+
+fetch(API + "?name=" + name + "&month=" + month)
+  .then(r => r.json())
+  .then(days => buildCalendar(days));
+
+function buildCalendar(presentDays) {
+  const table = document.getElementById("calendar");
+  let row = "<tr>";
+  for (let d = 1; d <= 31; d++) {
+    const date = month + "-" + String(d).padStart(2,"0");
+    const status = presentDays.includes(date) ? "P" : "A";
+    row += `<td class="${status}">${d}<br>${status}</td>`;
+    if (d % 7 === 0) {
+      row += "</tr><tr>";
+    }
+  }
+  row += "</tr>";
+  table.innerHTML = row;
+}
+</script>
+
+</body>
+</html>
