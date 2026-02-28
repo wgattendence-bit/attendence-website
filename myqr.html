@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>My QR Code</title>
+
+  <!-- QR Library (VERY IMPORTANT) -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 50px;
+    }
+    input {
+      padding: 10px;
+      width: 250px;
+      font-size: 16px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+    #qrcode {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h2>Get Your Attendance QR</h2>
+
+  <input id="name" type="text" placeholder="Enter your name" />
+  <br><br>
+
+  <button onclick="generateQR()">Show My QR</button>
+
+  <div id="qrcode"></div>
+
+  <br><br>
+
+  <button onclick="goScan()">Scan QR for Attendance</button>
+
+  <script>
+    function generateQR() {
+      document.getElementById("qrcode").innerHTML = "";
+      const name = document.getElementById("name").value.trim();
+
+      if (name === "") {
+        alert("Please enter your name");
+        return;
+      }
+
+      new QRCode(document.getElementById("qrcode"), {
+        text: name,
+        width: 200,
+        height: 200
+      });
+    }
+
+    function goScan() {
+      window.location.href = "index.html";
+    }
+  </script>
+
+</body>
+</html>
